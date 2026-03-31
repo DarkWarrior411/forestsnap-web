@@ -1,4 +1,4 @@
-<img src="logo.svg" alt="ForestSnap Logo" width="35"/># ForestSnap
+<img src="logo.svg" alt="ForestSnap Logo" width="35"/> ForestSnap
   
   # ForestSnap
   **Crowdsourced Fire Risk Estimation System**
