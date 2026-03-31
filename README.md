@@ -1,6 +1,5 @@
-<img src="logo.svg" alt="ForestSnap Logo" width="35"/> ForestSnap
+# <img src="logo.svg" alt="ForestSnap Logo" width="38" align="top">  ForestSnap
   
-  # ForestSnap
   **Crowdsourced Fire Risk Estimation System**
 
   *Bridging the ground-truth gap for off-grid forest environments.*
