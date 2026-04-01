@@ -282,22 +282,41 @@ export default function Home() {
              </div>
           </div>
 
+         {/* Students */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: 'Arya N.', usn: '1MS23CI017', initial: 'A' },
-              { name: 'Ishan Gupta', usn: '1MS23CI043', initial: 'I' },
-              { name: 'Kotagi Shashank', usn: '1MS23CI058', initial: 'K' },
-              { name: 'Kumar Aadarsh Suman', usn: '1MS23CI059', initial: 'K' }
+              { name: 'Arya N.', usn: '1MS23CI017', username: 'ARYA-N-24', github: 'https://github.com/ARYA-N-24' },
+              { name: 'Ishan Gupta', usn: '1MS23CI043', username: 'ishan8351', github: 'https://github.com/ishan8351' },
+              { name: 'Kotagi Shashank', usn: '1MS23CI058', username: 'Shashankckotagi', github: 'https://github.com/Shashankckotagi' },
+              { name: 'Kumar Aadarsh Suman', usn: '1MS23CI059', username: 'DarkWarrior411', github: 'https://github.com/DarkWarrior411' }
             ].map((member) => (
               <div key={member.usn} className={`p-6 rounded-2xl text-center group border transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${theme === 'dark' ? 'bg-[#0a0a0c] border-gray-800 hover:border-[#FF4500]/40 hover:shadow-[0_10px_30px_rgba(255,69,0,0.1)]' : 'bg-white border-gray-200 hover:border-[#FF4500]/40 shadow-sm'}`}>
-                <div className={`w-20 h-20 mx-auto rounded-full border-2 flex items-center justify-center text-2xl font-bold font-mono mb-4 transition-colors group-hover:border-[#FF4500] ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700 text-gray-400' : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200 text-gray-500'}`}>
-                  {member.initial}
+                
+                {/* Image Container */}
+                <div className={`relative w-20 h-20 mx-auto rounded-full border-2 mb-4 overflow-hidden transition-all duration-300 group-hover:border-[#FF4500] group-hover:scale-105 ${theme === 'dark' ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-100'}`}>
+                  <img 
+                    src={`https://github.com/${member.username}.png`} 
+                    alt={`${member.name}'s profile picture`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src = `https://ui-avatars.com/api/?name=${member.name.replace(' ', '+')}&background=random`;
+                    }}
+                  />
                 </div>
+
                 <h4 className="font-bold text-lg">{member.name}</h4>
                 <p className={`text-xs font-mono mt-1 ${theme === 'dark' ? 'text-[#FF4500]' : 'text-[#FF4500]'}`}>{member.usn}</p>
-                <button className={`mt-6 px-4 py-2 border text-xs font-mono rounded-lg transition-colors w-full ${theme === 'dark' ? 'bg-gray-900 border-gray-700 text-gray-300 hover:text-white hover:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}>
+                
+                {/* Updated Button to Anchor Link */}
+                <a 
+                  href={member.github}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`mt-6 block px-4 py-2 border text-xs font-mono rounded-lg transition-colors w-full ${theme === 'dark' ? 'bg-gray-900 border-gray-700 text-gray-300 hover:text-white hover:border-gray-500' : 'bg-gray-50 border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:border-gray-300'}`}
+                >
                   View GitHub
-                </button>
+                </a>
               </div>
             ))}
           </div>
