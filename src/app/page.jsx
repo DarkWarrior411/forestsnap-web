@@ -12,10 +12,19 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState('dark');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      // Calculate scroll progress for the top loading bar
+      const totalScroll = document.documentElement.scrollTop;
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      setScrollProgress(totalScroll / windowHeight || 0);
+    };
+    
     window.addEventListener('scroll', handleScroll);
     return () => { clearTimeout(timer); window.removeEventListener('scroll', handleScroll); };
   }, []);
@@ -33,8 +42,17 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen font-sans overflow-x-hidden relative selection:bg-[#FF4500] selection:text-white transition-colors duration-500 ${theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-[#FAFAFA] text-gray-900'}`}>
+      
+      {/* Dynamic Backgrounds */}
       <SmokeBackground theme={theme} />
       
+      {/* Scroll Progress Bar */}
+      <div 
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#FF4500] to-amber-400 z-[100] origin-left shadow-[0_0_10px_#FF4500]"
+        style={{ width: '100%', transform: `scaleX(${scrollProgress})`, transition: 'transform 0.1s ease-out' }}
+      />
+      
+      {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? (theme === 'dark' ? 'bg-[#050505]/80 backdrop-blur-md border-b border-gray-800' : 'bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm') : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer">
@@ -47,22 +65,33 @@ export default function Home() {
             <a href="#team" className={`relative pb-1 transition-colors ${theme === 'dark' ? 'hover:text-white' : 'hover:text-black'} after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#FF4500] after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100`}>Team</a>
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={toggleTheme} className={`p-2 rounded-full transition-colors ${theme === 'dark' ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
+            <button aria-label="Toggle Theme" onClick={toggleTheme} className={`p-2 rounded-full transition-colors ${theme === 'dark' ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
               {theme === 'dark' ? (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               ) : (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
               )}
             </button>
-            <button className={`px-5 py-2.5 border rounded-lg text-sm font-medium transition-all ${theme === 'dark' ? 'bg-gray-900 border-gray-700 hover:border-[#FF4500] hover:text-[#FF4500]' : 'bg-white border-gray-300 hover:border-[#FF4500] hover:text-[#FF4500] shadow-sm'}`}>
+            {/* Updated GitHub Repo Link */}
+            <a 
+              href="https://github.com/DarkWarrior411/forestsnap-web"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-5 py-2.5 border rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${theme === 'dark' ? 'bg-gray-900 border-gray-700 hover:border-[#FF4500] hover:text-[#FF4500]' : 'bg-white border-gray-300 hover:border-[#FF4500] hover:text-[#FF4500] shadow-sm'}`}
+            >
               GitHub Repo
-            </button>
+              {/* Optional: Adds a tiny external link icon for a premium feel */}
+              <svg className="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            </a>
           </div>
         </div>
       </nav>
 
+      {/* Hero Section */}
       <main className="relative z-10 pt-32 pb-10 px-6 max-w-7xl mx-auto overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[70vh]">
+          
+          {/* Left Text */}
           <div className="space-y-8 animate-[fadeInUp_1s_ease-out]">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FF4500]/10 border border-[#FF4500]/30 text-[#FF4500] text-xs font-mono tracking-wide uppercase">
               <span className="w-2 h-2 rounded-full bg-[#FF4500] animate-pulse" />
@@ -88,6 +117,7 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Right Visual (Interactive Parallax 3D Map) */}
           <div 
             className="h-[500px] w-full relative group animate-[fadeInUp_1.5s_ease-out]"
             onMouseMove={handleMouseMove}
@@ -119,6 +149,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Infinite Tech Stack Marquee */}
         <div className="mt-16 w-full overflow-hidden relative border-y py-4 flex items-center bg-black/5 backdrop-blur-sm">
           <div className="absolute left-0 w-32 h-full bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 w-32 h-full bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
@@ -132,6 +163,7 @@ export default function Home() {
             <span className="mx-8">• iNATURALIST</span>
             <span className="mx-8">• PLANTVILLAGE</span>
             
+            {/* Duplicated for seamless scrolling */}
             <span className="mx-8">• AWS INGESTION</span>
             <span className="mx-8">• U-NET SEGMENTATION</span>
             <span className="mx-8">• RESNET-50</span>
@@ -142,6 +174,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* The Problem Section */}
         <Reveal delay={100} className="mt-32 mb-32">
           <div className="text-center mb-16">
             <h2 className="text-sm font-mono text-[#FF4500] font-semibold tracking-widest uppercase mb-3">The Problem</h2>
@@ -164,10 +197,12 @@ export default function Home() {
           </div>
         </Reveal>
 
+        {/* Interactive Try AI Demo */}
         <Reveal delay={200} className="mb-32">
            <LeafInteractiveDemo theme={theme} />
         </Reveal>
 
+        {/* How It Works Pipeline */}
         <Reveal id="how-it-works" className="py-20">
           <div className="text-center mb-16">
             <h2 className="text-sm font-mono text-[#FF4500] font-semibold tracking-widest uppercase mb-3">The Solution</h2>
@@ -214,6 +249,7 @@ export default function Home() {
           </div>
         </Reveal>
 
+        {/* Architecture Flow Diagram */}
         <Reveal id="architecture" className="py-20" delay={200}>
            <div className="text-center mb-16">
             <h2 className="text-sm font-mono text-[#FF4500] font-semibold tracking-widest uppercase mb-3">System Blueprint</h2>
@@ -262,6 +298,7 @@ export default function Home() {
           </div>
         </Reveal>
 
+        {/* Team Section with dynamic GitHub Avatars */}
         <Reveal id="team" className="py-20 mb-20" delay={100}>
           <div className="text-center mb-16">
             <h2 className="text-sm font-mono text-[#FF4500] font-semibold tracking-widest uppercase mb-3">The Team</h2>
@@ -282,7 +319,7 @@ export default function Home() {
              </div>
           </div>
 
-         {/* Students */}
+          {/* Students */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { name: 'Arya N.', usn: '1MS23CI017', username: 'ARYA-N-24', github: 'https://github.com/ARYA-N-24' },
@@ -292,7 +329,7 @@ export default function Home() {
             ].map((member) => (
               <div key={member.usn} className={`p-6 rounded-2xl text-center group border transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${theme === 'dark' ? 'bg-[#0a0a0c] border-gray-800 hover:border-[#FF4500]/40 hover:shadow-[0_10px_30px_rgba(255,69,0,0.1)]' : 'bg-white border-gray-200 hover:border-[#FF4500]/40 shadow-sm'}`}>
                 
-                {/* Image Container */}
+                {/* Dynamically Fetched GitHub Profile Images */}
                 <div className={`relative w-20 h-20 mx-auto rounded-full border-2 mb-4 overflow-hidden transition-all duration-300 group-hover:border-[#FF4500] group-hover:scale-105 ${theme === 'dark' ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-100'}`}>
                   <img 
                     src={`https://github.com/${member.username}.png`} 
@@ -308,7 +345,6 @@ export default function Home() {
                 <h4 className="font-bold text-lg">{member.name}</h4>
                 <p className={`text-xs font-mono mt-1 ${theme === 'dark' ? 'text-[#FF4500]' : 'text-[#FF4500]'}`}>{member.usn}</p>
                 
-                {/* Updated Button to Anchor Link */}
                 <a 
                   href={member.github}
                   target="_blank" 
@@ -324,6 +360,7 @@ export default function Home() {
 
       </main>
 
+      {/* Footer */}
       <footer className={`border-t py-12 relative z-10 transition-colors ${theme === 'dark' ? 'border-gray-800/50 bg-black/50' : 'border-gray-200 bg-gray-50'}`}>
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className={`flex items-center gap-2 ${theme === 'dark' ? 'opacity-50' : 'opacity-70'}`}>
